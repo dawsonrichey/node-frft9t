@@ -1,6 +1,6 @@
 // run `node index.js` in the terminal
 
-console.log(`Hello Node.js v${process.versions.node}!`);
+// console.log(`Hello Node.js v${process.versions.node}!`);
 
 const sqlite3 = require('sqlite3').verbose();
 
@@ -13,14 +13,17 @@ let db = new sqlite3.Database('mydb.db', sqlite3.OPEN_READWRITE, (err) => {
 });
 
 db.serialize(() => {
-  db.each(`SELECT PlaylistId as id,
+  db.each(
+    `SELECT PlaylistId as id,
                   Name as name
-           FROM playlists`, (err, row) => {
-    if (err) {
-      console.error(err.message);
+           FROM playlists`,
+    (err, row) => {
+      if (err) {
+        console.error(err.message);
+      }
+      console.log(row.id + '\t' + row.name);
     }
-    console.log(row.id + "\t" + row.name);
-  });
+  );
 });
 
 db.close((err) => {
