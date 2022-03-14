@@ -33,6 +33,25 @@ db.all(
 db.run(`INSERT INTO playlists(Name) VALUES(?)`, ['Rock'], function (error) {
   console.log('New playlist added with id ' + this.lastID);
 });
+
+//Using SQLite each() Method Instead of forEach()
+db.each(
+  'SELECT EmployeeId, FirstName FROM employees limit 10',
+  (error, row) => {
+    console.log(row.EmployeeId + ' ' + row.FirstName);
+  }
+);
+
+//with serialize method
+db.serialize(() => {
+  db.run('DROP TABLE playlists');
+  db.run(
+    'CREATE TABLE playlists([PlaylistId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,[Name] NVARCHAR(120))'
+  );
+  db.run(
+    "INSERT INTO playlists (name) VALUES  ('Music'), ('Movies'), ('TV Shows')"
+  );
+});
 // const sqlite3 = require('sqlite3').verbose();
 
 // // open the database
